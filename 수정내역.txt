@@ -1,0 +1,7 @@
+[2018-05-14]
+다애
+1. 인벤토리 UI 필드맵에 적용.
+2. 아이템 텍스트 반경에서 벗어났을때 Destroy
+   되는거 Visability hidden 으로 변경.
+   ->PickUpItem 이벤트에서만 Destroy됨. 
+       	
