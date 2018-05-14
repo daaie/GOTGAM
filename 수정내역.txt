@@ -5,3 +5,9 @@
    되는거 Visability hidden 으로 변경.
    ->PickUpItem 이벤트에서만 Destroy됨. 
        	
+
+[2018-05-15]
+승주
+1. 적 AI 랜덤으로 공격, 방어 작동
+2. 플레이어 턴이 끝났을 경우에 적을 Target 하거나 자기 자신위에 Defence를 
+   띄움
