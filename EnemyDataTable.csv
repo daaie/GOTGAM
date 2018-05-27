@@ -1,0 +1,9 @@
+,InitialValue,Vital,Attack,Defense,Improv,Type,Class,Drop,canMate
+Dinosaur,26,28,30,22,22,Dino,Nomal,Meet,TRUE
+Fly,27,26,26,26,26,Insect,Nomal,Meet,TRUE
+GreenGolem,28,30,40,36,16,Golem,Hidden,Meet,TRUE
+RavaGolem,28,30,42,42,12,Golem,Hidden,Meet,TRUE
+MetalGolem,28,32,46,36,14,Golem,Hidden,Meet,TRUE
+SpearTron,30,40,50,40,30,Tron,MinBoss,,FALSE
+SwordTron,30,40,50,30,40,Tron,MinBoss,,FALSE
+CyberTron,32,44,55,35,35,Tron,Boss,,FALSE
