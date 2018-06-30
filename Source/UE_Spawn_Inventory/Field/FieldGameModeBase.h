@@ -19,6 +19,6 @@ public:
 	virtual void PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		FString UserId = TEXT("Server");
+		FString UserID = TEXT("Server");
 
 };

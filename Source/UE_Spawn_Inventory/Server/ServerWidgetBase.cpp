@@ -22,7 +22,8 @@ void UServerWidgetBase::StartServer()
 	{
 		if (!ServerIP->GetText().IsEmpty())
 		{
-			UGameplayStatics::OpenLevel(GetWorld(), *ServerIP->GetText().ToString(),false, TEXT("UserId=Test"));
+			OptionString = TEXT("UserID=") + UserID;
+			UGameplayStatics::OpenLevel(GetWorld(), *ServerIP->GetText().ToString(),false, OptionString);
 		}
 	}
 }

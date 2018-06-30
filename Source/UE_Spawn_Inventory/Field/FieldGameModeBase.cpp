@@ -5,6 +5,6 @@
 
 void AFieldGameModeBase::PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage)
 {
-	FString NewUserId = UGameplayStatics::ParseOption(*Options, "UserId");
-	UserId = NewUserId;
+	FString NewUserId = UGameplayStatics::ParseOption(*Options, "UserID");
+	UserID = NewUserId;
 }

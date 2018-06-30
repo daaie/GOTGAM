@@ -23,6 +23,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UEditableTextBox* ServerIP;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	FString UserID;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	FString OptionString;
+
 	UFUNCTION()
 	void StartServer();
 };
