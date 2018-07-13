@@ -8,7 +8,7 @@ public class UE_Spawn_InventoryTarget : TargetRules
 	public UE_Spawn_InventoryTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
-
-		ExtraModuleNames.AddRange( new string[] { "UE_Spawn_Inventory" } );
+       
+        ExtraModuleNames.AddRange( new string[] { "UE_Spawn_Inventory" } );
 	}
 }
