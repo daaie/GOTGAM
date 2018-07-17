@@ -37,8 +37,21 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void OpenBattleMap();
 
+	// OptionString
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FName SessionName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MonsterLevel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int NumParty;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString ParticipantID;
+
+	FString OptionString;
+
 
 	// FindSession
 	void FindSessions(TSharedPtr<const FUniqueNetId> UserId, bool bIsLAN, bool bIsPresence);

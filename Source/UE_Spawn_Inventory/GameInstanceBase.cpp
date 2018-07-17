@@ -104,7 +104,12 @@ void UGameInstanceBase::OnStartOnlineGameComplete(FName SessionName, bool bWasSu
 
 	if (bWasSuccessful)
 	{
-		UGameplayStatics::OpenLevel(GetWorld(), "BattleMap", true, "listen");
+		OptionString = TEXT("listen?MonsterLevel=") + FString::FromInt(MonsterLevel);
+		OptionString += TEXT("?PartyNumber=") + FString::FromInt(NumParty);
+
+		UE_LOG(LogClass, Warning, TEXT("%s"), *OptionString);
+
+		UGameplayStatics::OpenLevel(GetWorld(), "BattleMap", true, OptionString);
 	}
 }
 
@@ -232,7 +237,9 @@ void UGameInstanceBase::OnJoinSessionComplete(FName SessionName, EOnJoinSessionC
 
 			if (PlayerController && Sessions->GetResolvedConnectString(SessionName, TravelURL))
 			{
-				UE_LOG(LogClass, Warning, TEXT("Clinet Travel URL !!!!! %s"), *TravelURL);
+				GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Clinet Travel URL 1111!!!!! %s"), *TravelURL));
+				TravelURL += FString::Printf(TEXT("?ParticipantID=")) + ParticipantID;
+				GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Clinet Travel URL 2222!!!!! %s"), *TravelURL));
 				PlayerController->ClientTravel(TravelURL, ETravelType::TRAVEL_Absolute, false);
 			}
 		}
@@ -247,7 +254,6 @@ void UGameInstanceBase::JoinBattleGame(FOnlineSessionSearchResult SearchResult)
 	if (SearchResult.IsValid())
 	{
 		JoinBattleSession(Player->GetPreferredUniqueNetId(), SessionName, SearchResult);
-		UE_LOG(LogClass, Warning, TEXT("JoinBattleGame!! ???!!! %s"), *SessionName.ToString());
 	}
 
 }
