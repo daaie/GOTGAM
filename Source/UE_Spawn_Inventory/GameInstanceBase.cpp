@@ -106,6 +106,7 @@ void UGameInstanceBase::OnStartOnlineGameComplete(FName SessionName, bool bWasSu
 	{
 		OptionString = FString::Printf(TEXT("listen?MonsterLevel=%d"), MonsterLevel);
 		OptionString += FString::Printf(TEXT("?PartyNumber=%d"), NumParty);
+		OptionString += FString::Printf(TEXT("?ParticipantID=%s"), *ParticipantID);
 
 		UE_LOG(LogClass, Warning, TEXT("%s"), *OptionString);
 
