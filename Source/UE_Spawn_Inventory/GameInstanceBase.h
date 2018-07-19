@@ -19,6 +19,7 @@ class UE_SPAWN_INVENTORY_API UGameInstanceBase : public UGameInstance
 	
 public:
 	UGameInstanceBase(const FObjectInitializer& ObjectInitializer);
+
 	//CreateSession
 
 	FOnCreateSessionCompleteDelegate OnCreateSessionCompleteDelegate;
@@ -37,6 +38,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void OpenBattleMap();
 
+
 	// OptionString
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FName SessionName;
@@ -52,6 +54,9 @@ public:
 
 	FString OptionString;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString ServerIP = "192.168.0.115";
+
 
 	// FindSession
 	void FindSessions(TSharedPtr<const FUniqueNetId> UserId, bool bIsLAN, bool bIsPresence);
@@ -65,6 +70,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void FindOnlineGames();
 
+
 	// JoinSession
 	bool JoinBattleSession(TSharedPtr<const FUniqueNetId> UserId, FName SessionName, const FOnlineSessionSearchResult& SearchResult);
 
@@ -75,5 +81,14 @@ public:
 
 	void JoinBattleGame(FOnlineSessionSearchResult SearchResult);
 
-	
+
+
+	// destroySession
+	FOnDestroySessionCompleteDelegate OnDestroySessionCompleteDelegate;
+	FDelegateHandle OnDestroySessionCompleteDelegateHandle;
+
+	virtual void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
+
+	UFUNCTION(BlueprintCallable)
+		void DestroySessionAndLeaveGame();
 };

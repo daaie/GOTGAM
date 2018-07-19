@@ -9,6 +9,7 @@ UGameInstanceBase::UGameInstanceBase(const FObjectInitializer & ObjectInitialize
 	OnStartSessionCompleteDelegate = FOnStartSessionCompleteDelegate::CreateUObject(this, &UGameInstanceBase::OnStartOnlineGameComplete);
 	OnFindSessionsCompleteDelegate = FOnFindSessionsCompleteDelegate::CreateUObject(this, &UGameInstanceBase::OnFindSessionsComplete);
 	OnJoinSessionCompleteDelegate = FOnJoinSessionCompleteDelegate::CreateUObject(this, &UGameInstanceBase::OnJoinSessionComplete);
+	OnDestroySessionCompleteDelegate = FOnDestroySessionCompleteDelegate::CreateUObject(this, &UGameInstanceBase::OnDestroySessionComplete);
 }
 
 bool UGameInstanceBase::HostSession(TSharedPtr<const FUniqueNetId> UserId, FName SessionName, bool bIsLAN, bool bIsPresence, int32 MaxNumPlayers)
@@ -238,7 +239,6 @@ void UGameInstanceBase::OnJoinSessionComplete(FName SessionName, EOnJoinSessionC
 
 			if (PlayerController && Sessions->GetResolvedConnectString(SessionName, TravelURL))
 			{
-				GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Clinet Travel URL 1111!!!!! %s"), *TravelURL));
 				TravelURL += FString::Printf(TEXT("?ParticipantID=")) + ParticipantID;
 				GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Clinet Travel URL 2222!!!!! %s"), *TravelURL));
 				PlayerController->ClientTravel(TravelURL, ETravelType::TRAVEL_Absolute, false);
@@ -257,4 +257,50 @@ void UGameInstanceBase::JoinBattleGame(FOnlineSessionSearchResult SearchResult)
 		JoinBattleSession(Player->GetPreferredUniqueNetId(), SessionName, SearchResult);
 	}
 
+}
+
+
+void UGameInstanceBase::OnDestroySessionComplete(FName SessionName, bool bWasSuccessful)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("OnDestroySessionComplete %s, %d"), *SessionName.ToString(), bWasSuccessful));
+
+	UE_LOG(LogClass, Warning, TEXT("OnDestroySessionComplete %s, %d"), *SessionName.ToString(), bWasSuccessful);
+	// Get the OnlineSubsystem we want to work with
+	IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
+	if (OnlineSub)
+	{
+		// Get the SessionInterface from the OnlineSubsystem
+		IOnlineSessionPtr Sessions = OnlineSub->GetSessionInterface();
+
+		if (Sessions.IsValid())
+		{
+			// Clear the Delegate
+			Sessions->ClearOnDestroySessionCompleteDelegate_Handle(OnDestroySessionCompleteDelegateHandle);
+
+			// If it was successful, we just load another level (could be a MainMenu!)
+			if (bWasSuccessful)
+			{
+				OptionString = TEXT("UserID=") + ParticipantID;
+				UGameplayStatics::OpenLevel(GetWorld(), FName(*ServerIP), true, OptionString);
+			}
+		}
+	}
+}
+
+void UGameInstanceBase::DestroySessionAndLeaveGame()
+{
+	IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
+	if (OnlineSub)
+	{
+		IOnlineSessionPtr Sessions = OnlineSub->GetSessionInterface();
+
+		if (Sessions.IsValid())
+		{
+			Sessions->AddOnDestroySessionCompleteDelegate_Handle(OnDestroySessionCompleteDelegate);
+
+			UE_LOG(LogClass, Warning, TEXT("Session Name !!:::??? %s"), *SessionName.ToString());
+
+			Sessions->DestroySession(SessionName);
+		}
+	}
 }

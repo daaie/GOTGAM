@@ -30,5 +30,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		int NumParty = 0;
-	
+
+	UFUNCTION(Exec)
+		void Destroy();
 };
