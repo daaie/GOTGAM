@@ -22,6 +22,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 		FString UserID = TEXT("Server");
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+		FString ServerID = TEXT("Server");
+
 
 	// Server Variable.
 

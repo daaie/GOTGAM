@@ -14,6 +14,6 @@ void ABattleGameModeBase::Destroy()
 {
 	UGameInstance *GameInstanceTemp = GetGameInstance();
 	UGameInstanceBase *GameInstanceBase = Cast<UGameInstanceBase>(GameInstanceTemp);
-	GameInstanceBase->SessionName = FName(*UserID);
+	GameInstanceBase->SessionName = FName(*ServerID);
 	GameInstanceBase->DestroySessionAndLeaveGame();
 }
