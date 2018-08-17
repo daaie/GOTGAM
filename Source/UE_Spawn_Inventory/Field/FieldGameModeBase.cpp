@@ -5,6 +5,12 @@
 
 void AFieldGameModeBase::PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage)
 {
-	FString NewUserId = UGameplayStatics::ParseOption(*Options, "UserID");
-	UserID = NewUserId;
+	FString TempUserId = UGameplayStatics::ParseOption(*Options, "UserID");
+	UserID = TempUserId;
+
+	FString TempFromBattle = UGameplayStatics::ParseOption(*Options, "IsFromBattle");
+	IsFromBattle = TempFromBattle;
+
+	FString TempPartyBattle = UGameplayStatics::ParseOption(*Options, "IsPartyBattle");
+	IsPartyBattle = TempPartyBattle;
 }

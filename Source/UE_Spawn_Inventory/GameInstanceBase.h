@@ -41,22 +41,24 @@ public:
 
 	// OptionString
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FName SessionName;
+	FName SessionName;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int MonsterLevel;
+	int MonsterLevel;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int NumParty;
+	int NumParty;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString ParticipantID;
+	FString ParticipantID;
 
 	FString OptionString;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString ServerIP = "192.168.0.115";
+	FString ServerIP = "116.255.78.91";
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString IsPartyBattle;
 
 	// FindSession
 	void FindSessions(TSharedPtr<const FUniqueNetId> UserId, bool bIsLAN, bool bIsPresence);
@@ -68,7 +70,7 @@ public:
 	void OnFindSessionsComplete(bool bWasSuccessful);
 
 	UFUNCTION(BlueprintCallable)
-		void FindOnlineGames();
+	void FindOnlineGames();
 
 
 	// JoinSession
@@ -90,5 +92,8 @@ public:
 	virtual void OnDestroySessionComplete(FName SessionName, bool bWasSuccessful);
 
 	UFUNCTION(BlueprintCallable)
-		void DestroySessionAndLeaveGame();
+	void DestroySessionAndLeaveGame();
+
+	UFUNCTION(BlueprintCallable)
+	void OpenFieldMap();
 };

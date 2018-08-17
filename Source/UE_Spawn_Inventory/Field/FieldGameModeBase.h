@@ -19,6 +19,11 @@ public:
 	virtual void PreLogin(const FString& Options, const FString& Address, const FUniqueNetIdRepl& UniqueId, FString& ErrorMessage) override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	FString UserID = TEXT("Server");
+	FString UserID = TEXT("NameError");
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FString IsFromBattle;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	FString IsPartyBattle;
 };

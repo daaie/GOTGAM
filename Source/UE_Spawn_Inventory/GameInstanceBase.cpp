@@ -147,7 +147,6 @@ void UGameInstanceBase::FindSessions(TSharedPtr<const FUniqueNetId> UserId, bool
 	}
 	else
 	{
-		// If something goes wrong, just call the Delegate Function directly with "false".
 		OnFindSessionsComplete(false);
 	}
 }
@@ -156,22 +155,16 @@ void UGameInstanceBase::OnFindSessionsComplete(bool bWasSuccessful)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("OFindSessionsComplete bSuccess: %d"), bWasSuccessful));
 
-	// Get OnlineSubsystem we want to work with
 	IOnlineSubsystem* const OnlineSub = IOnlineSubsystem::Get();
 	if (OnlineSub)
 	{
-		// Get SessionInterface of the OnlineSubsystem
-		//IOnlineSessionPtr Sessions = Online::GetSessionInterface();
 		IOnlineSessionPtr Sessions = OnlineSub->GetSessionInterface();
 		if (Sessions.IsValid())
 		{
-			// Clear the Delegate handle, since we finished this call
 			Sessions->ClearOnFindSessionsCompleteDelegate_Handle(OnFindSessionsCompleteDelegateHandle);
 
-			// Just debugging the Number of Search results. Can be displayed in UMG or something later on
 			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Num Search Results: %d"), SessionSearch->SearchResults.Num()));
 
-			// If we have found at least 1 session, we just going to debug them. You could add them to a list of UMG Widgets, like it is done in the BP version!
 			if (SessionSearch->SearchResults.Num() > 0)
 			{
 				for (int32 SearchIdx = 0; SearchIdx < SessionSearch->SearchResults.Num(); SearchIdx++)
@@ -241,7 +234,7 @@ void UGameInstanceBase::OnJoinSessionComplete(FName SessionName, EOnJoinSessionC
 			{
 				TravelURL += FString::Printf(TEXT("?ParticipantID=")) + ParticipantID;
 				GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Clinet Travel URL 2222!!!!! %s"), *TravelURL));
-				PlayerController->ClientTravel(TravelURL, ETravelType::TRAVEL_Absolute, false);
+				PlayerController->ClientTravel(TravelURL, ETravelType::TRAVEL_Absolute, true);
 			}
 		}
 	}
@@ -265,23 +258,22 @@ void UGameInstanceBase::OnDestroySessionComplete(FName SessionName, bool bWasSuc
 	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("OnDestroySessionComplete %s, %d"), *SessionName.ToString(), bWasSuccessful));
 
 	UE_LOG(LogClass, Warning, TEXT("OnDestroySessionComplete %s, %d"), *SessionName.ToString(), bWasSuccessful);
-	// Get the OnlineSubsystem we want to work with
 	IOnlineSubsystem* OnlineSub = IOnlineSubsystem::Get();
 	if (OnlineSub)
 	{
-		// Get the SessionInterface from the OnlineSubsystem
 		IOnlineSessionPtr Sessions = OnlineSub->GetSessionInterface();
 
 		if (Sessions.IsValid())
 		{
-			// Clear the Delegate
 			Sessions->ClearOnDestroySessionCompleteDelegate_Handle(OnDestroySessionCompleteDelegateHandle);
 
-			// If it was successful, we just load another level (could be a MainMenu!)
 			if (bWasSuccessful)
 			{
-				OptionString = TEXT("UserID=") + ParticipantID;
+				OptionString = TEXT("?UserID=") + ParticipantID;
+				OptionString += TEXT("?IsFromBattle=Battle");
+				OptionString += FString::Printf(TEXT("?IsPartyBattle=%s"), *IsPartyBattle);
 				UGameplayStatics::OpenLevel(GetWorld(), FName(*ServerIP), true, OptionString);
+				
 			}
 		}
 	}
@@ -303,4 +295,14 @@ void UGameInstanceBase::DestroySessionAndLeaveGame()
 			Sessions->DestroySession(SessionName);
 		}
 	}
+}
+
+
+void UGameInstanceBase::OpenFieldMap()
+{
+	OptionString = TEXT("UserID=") + ParticipantID;
+	OptionString += TEXT("?IsFromBattle=Battle");
+	OptionString += FString::Printf(TEXT("?IsPartyBattle=%s"), *IsPartyBattle);
+
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*ServerIP), true, OptionString);
 }
